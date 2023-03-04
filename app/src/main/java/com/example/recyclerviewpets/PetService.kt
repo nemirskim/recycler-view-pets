@@ -4,13 +4,16 @@ import com.example.recyclerviewpets.models.Pet
 import com.github.javafaker.Faker
 import kotlin.random.Random
 
+typealias PetListener = (pets: List<Pet>) -> Unit
+
 class PetService {
     private var pets = mutableListOf<Pet>()
+    private var listeners = mutableSetOf<PetListener>()
 
     init {
         val faker = Faker.instance()
-        pets = (1..10).map {
-            Pet (
+        pets = (0..9).map {
+            Pet(
                 Random.nextLong(1_000_000_000, 9_999_999_999),
                 faker.animal().name(),
                 Random.nextInt(1, 18),
@@ -24,6 +27,7 @@ class PetService {
         if (index != -1) {
             val nPet = pet.copy(name = name)
             pets[index] = nPet
+            notifyChanges()
         }
     }
 
@@ -33,9 +37,11 @@ class PetService {
             if (pet.isFavorite) {
                 val nPet = pet.copy(isFavorite = false)
                 pets[index] = nPet
+                notifyChanges()
             } else {
                 val nPet = pet.copy(isFavorite = true)
                 pets[index] = nPet
+                notifyChanges()
             }
         }
     }
@@ -44,12 +50,22 @@ class PetService {
         val index = getIndex(pet)
         if (index != -1) {
             pets.removeAt(index)
+            notifyChanges()
         }
     }
 
     private fun getPet(id: Long): Pet = pets.first { it.id == id }
 
     private fun getIndex(pet: Pet): Int = pets.indexOfFirst { it.id == pet.id }
+
+    private fun addListener(listener: PetListener) {
+        listeners.add(listener)
+        listener.invoke(pets)
+    }
+
+    private fun removeListener(listener: PetListener) = listeners.remove(listener)
+
+    private fun notifyChanges() = listeners.forEach { it.invoke(pets) }
 
     companion object {
         private val PHOTOS = mutableListOf(
