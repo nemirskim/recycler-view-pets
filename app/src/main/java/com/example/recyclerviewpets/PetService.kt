@@ -19,6 +19,38 @@ class PetService {
         }.toMutableList()
     }
 
+    fun renamePet(pet: Pet, name: String) {
+        val index = getIndex(pet)
+        if (index != -1) {
+            val nPet = pet.copy(name = name)
+            pets[index] = nPet
+        }
+    }
+
+    fun changeFavoriteStatus(pet: Pet) {
+        val index = getIndex(pet)
+        if (index != -1) {
+            if (pet.isFavorite) {
+                val nPet = pet.copy(isFavorite = false)
+                pets[index] = nPet
+            } else {
+                val nPet = pet.copy(isFavorite = true)
+                pets[index] = nPet
+            }
+        }
+    }
+
+    fun deletePet(pet: Pet) {
+        val index = getIndex(pet)
+        if (index != -1) {
+            pets.removeAt(index)
+        }
+    }
+
+    private fun getPet(id: Long): Pet = pets.first { it.id == id }
+
+    private fun getIndex(pet: Pet): Int = pets.indexOfFirst { it.id == pet.id }
+
     companion object {
         private val PHOTOS = mutableListOf(
             "https://images.unsplash.com/photo-1523626797181-8c5ae80d40c2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&ixid=MnwxfDB8MXxyYW5kb218MHx8YW5pbWFsfHx8fHx8MTY3NzYxOTgwMg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
