@@ -1,4 +1,4 @@
-package com.example.recyclerviewpets
+package com.example.recyclerviewpets.services
 
 import com.example.recyclerviewpets.models.Pet
 import com.github.javafaker.Faker

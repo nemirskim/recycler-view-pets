@@ -2,6 +2,7 @@ package com.example.recyclerviewpets
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.recyclerviewpets.services.PetService
 
 class MainActivity : AppCompatActivity() {
     private val petService: PetService
