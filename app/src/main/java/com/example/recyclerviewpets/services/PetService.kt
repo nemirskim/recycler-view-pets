@@ -54,16 +54,16 @@ class PetService {
         }
     }
 
-    private fun getPet(id: Long): Pet = pets.first { it.id == id }
-
-    private fun getIndex(pet: Pet): Int = pets.indexOfFirst { it.id == pet.id }
-
-    private fun addListener(listener: PetListener) {
+    fun addListener(listener: PetListener) {
         listeners.add(listener)
         listener.invoke(pets)
     }
 
-    private fun removeListener(listener: PetListener) = listeners.remove(listener)
+    fun removeListener(listener: PetListener) = listeners.remove(listener)
+
+    private fun getPet(id: Long): Pet = pets.first { it.id == id }
+
+    private fun getIndex(pet: Pet): Int = pets.indexOfFirst { it.id == pet.id }
 
     private fun notifyChanges() = listeners.forEach { it.invoke(pets) }
 

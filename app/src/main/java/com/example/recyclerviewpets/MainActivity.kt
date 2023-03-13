@@ -8,6 +8,7 @@ import com.example.recyclerviewpets.services.PetService
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: PetAdapter
     private val petService: PetService
         get() = (applicationContext as App).petService
 
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = PetAdapter()
+        adapter = PetAdapter()
 
         val layoutManager = LinearLayoutManager(this)
         binding.rV.layoutManager = layoutManager
