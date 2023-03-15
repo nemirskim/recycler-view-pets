@@ -1,5 +1,6 @@
 package com.example.recyclerviewpets.services
 
+import android.util.Log
 import com.example.recyclerviewpets.models.Pet
 import com.github.javafaker.Faker
 import kotlin.random.Random
@@ -22,15 +23,6 @@ class PetService {
         }.toMutableList()
     }
 
-    fun renamePet(pet: Pet, name: String) {
-        val index = getIndex(pet)
-        if (index != -1) {
-            val nPet = pet.copy(name = name)
-            pets[index] = nPet
-            notifyChanges()
-        }
-    }
-
     fun changeFavoriteStatus(pet: Pet) {
         val index = getIndex(pet)
         if (index != -1) {
@@ -43,6 +35,15 @@ class PetService {
                 pets[index] = favoritePet
                 notifyChanges()
             }
+        }
+    }
+
+    fun renamePet(pet: Pet, name: String) {
+        val index = getIndex(pet)
+        if (index != -1) {
+            val nPet = pet.copy(name = name)
+            pets[index] = nPet
+            notifyChanges()
         }
     }
 
