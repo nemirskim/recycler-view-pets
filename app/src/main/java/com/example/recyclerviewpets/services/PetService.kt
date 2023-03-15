@@ -1,6 +1,5 @@
 package com.example.recyclerviewpets.services
 
-import android.util.Log
 import com.example.recyclerviewpets.models.Pet
 import com.github.javafaker.Faker
 import kotlin.random.Random

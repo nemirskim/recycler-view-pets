@@ -1,9 +1,11 @@
 package com.example.recyclerviewpets
 
 import android.annotation.SuppressLint
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recyclerviewpets.databinding.ItemPetBinding
@@ -11,11 +13,14 @@ import com.example.recyclerviewpets.models.Pet
 
 interface PetActionsListener {
     fun onPetFavoriteStatus(pet: Pet)
+    fun onPetRename(pet: Pet, name: String)
 }
 
 class PetAdapter(
     private val actionsListener: PetActionsListener
-) : RecyclerView.Adapter<PetAdapter.PetViewHolder>(), View.OnClickListener {
+) : RecyclerView.Adapter<PetAdapter.PetViewHolder>(),
+    View.OnClickListener,
+    TextView.OnEditorActionListener {
     var pets = emptyList<Pet>()
         @SuppressLint("NotifyDataSetChanged")
         set(newValue) {
@@ -27,6 +32,7 @@ class PetAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemPetBinding.inflate(inflater, parent, false)
 
+        binding.petNameET.setOnEditorActionListener(this)
         binding.changeFavoriteStatusIV.setOnClickListener(this)
 
         return PetViewHolder(binding)
@@ -37,9 +43,11 @@ class PetAdapter(
         val context = holder.itemView.context
         with(holder.binding) {
             holder.itemView.tag = pet
+            petNameET.tag = pet
             changeFavoriteStatusIV.tag = pet
             renameIV.tag = pet
             deleteIV.tag = pet
+
             petNameET.setText(pet.name)
 
             if (pet.age == 1) {
@@ -66,17 +74,34 @@ class PetAdapter(
             } else {
                 changeFavoriteStatusIV.setImageResource(R.drawable.ic_star_border)
             }
+
+            renameIV.setOnClickListener {
+                petNameET.isEnabled = true
+            }
         }
     }
 
     override fun getItemCount(): Int = pets.size
 
-//    View.OnClickListener
+    // View.OnClickListener
     override fun onClick(v: View) {
         val pet = v.tag as Pet
-        when(v.id) {
+        when (v.id) {
             R.id.changeFavoriteStatusIV ->
                 actionsListener.onPetFavoriteStatus(pet)
+        }
+    }
+
+    // TextView.SetOnEditorActionListener
+    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
+        val pet = v.tag as Pet
+        return when (v.id) {
+            R.id.petNameET -> {
+                v.isEnabled = false
+                actionsListener.onPetRename(pet, v.text.toString())
+                true
+            }
+            else -> false
         }
     }
 
