@@ -35,12 +35,12 @@ class PetService {
         val index = getIndex(pet)
         if (index != -1) {
             if (pet.isFavorite) {
-                val nPet = pet.copy(isFavorite = false)
-                pets[index] = nPet
+                val ordinaryPet = pet.copy(isFavorite = false)
+                pets[index] = ordinaryPet
                 notifyChanges()
             } else {
-                val nPet = pet.copy(isFavorite = true)
-                pets[index] = nPet
+                val favoritePet = pet.copy(isFavorite = true)
+                pets[index] = favoritePet
                 notifyChanges()
             }
         }
