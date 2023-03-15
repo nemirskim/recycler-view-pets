@@ -40,7 +40,7 @@ class PetAdapter(
             changeFavoriteStatusIV.tag = pet
             renameIV.tag = pet
             deleteIV.tag = pet
-            petNameTV.text = pet.name
+            petNameET.setText(pet.name)
 
             if (pet.age == 1) {
                 petAgeTV.text = context.getString(R.string.a_year)
