@@ -4,10 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewpets.databinding.ActivityMainBinding
+import com.example.recyclerviewpets.models.Pet
 import com.example.recyclerviewpets.services.PetListener
 import com.example.recyclerviewpets.services.PetService
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PetActionsListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: PetAdapter
     private val petService: PetService
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = PetAdapter()
+        adapter = PetAdapter(this)
 
         val layoutManager = LinearLayoutManager(this)
         binding.rV.layoutManager = layoutManager
@@ -33,5 +34,10 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         petService.removeListener(petListener)
+    }
+
+//    PetActionsListener
+    override fun onPetFavoriteStatus(pet: Pet) {
+        petService.changeFavoriteStatus(pet)
     }
 }

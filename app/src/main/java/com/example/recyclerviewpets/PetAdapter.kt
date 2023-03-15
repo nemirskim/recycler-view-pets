@@ -2,13 +2,20 @@ package com.example.recyclerviewpets
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recyclerviewpets.databinding.ItemPetBinding
 import com.example.recyclerviewpets.models.Pet
 
-class PetAdapter : RecyclerView.Adapter<PetAdapter.PetViewHolder>() {
+interface PetActionsListener {
+    fun onPetFavoriteStatus(pet: Pet)
+}
+
+class PetAdapter(
+    private val actionsListener: PetActionsListener
+) : RecyclerView.Adapter<PetAdapter.PetViewHolder>(), View.OnClickListener {
     var pets = emptyList<Pet>()
         @SuppressLint("NotifyDataSetChanged")
         set(newValue) {
@@ -19,6 +26,9 @@ class PetAdapter : RecyclerView.Adapter<PetAdapter.PetViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemPetBinding.inflate(inflater, parent, false)
+
+        binding.changeFavoriteStatusIV.setOnClickListener(this)
+
         return PetViewHolder(binding)
     }
 
@@ -27,13 +37,17 @@ class PetAdapter : RecyclerView.Adapter<PetAdapter.PetViewHolder>() {
         val context = holder.itemView.context
         with(holder.binding) {
             holder.itemView.tag = pet
+            changeFavoriteStatusIV.tag = pet
+            renameIV.tag = pet
+            deleteIV.tag = pet
             petNameTV.text = pet.name
-            petAgeTV.text =
-                if (pet.age == 1) {
-                    context.getString(R.string.a_year)
-                } else {
-                    context.getString(R.string.age, pet.age.toString())
-                }
+
+            if (pet.age == 1) {
+                petAgeTV.text = context.getString(R.string.a_year)
+            } else {
+                petAgeTV.text = context.getString(R.string.age, pet.age.toString())
+            }
+
             if (pet.photo.isNotBlank()) {
                 Glide.with(petIV.context)
                     .load(pet.photo)
@@ -46,13 +60,25 @@ class PetAdapter : RecyclerView.Adapter<PetAdapter.PetViewHolder>() {
                     .clear(petIV)
                 petIV.setImageResource(R.drawable.ic_pet_icon)
             }
-            favoriteIV.tag = pet
-            renameIV.tag = pet
-            deleteIV.tag = pet
+
+            if (pet.isFavorite) {
+                changeFavoriteStatusIV.setImageResource(R.drawable.ic_star_fill)
+            } else {
+                changeFavoriteStatusIV.setImageResource(R.drawable.ic_star_border)
+            }
         }
     }
 
     override fun getItemCount(): Int = pets.size
+
+//    View.OnClickListener
+    override fun onClick(v: View) {
+        val pet = v.tag as Pet
+        when(v.id) {
+            R.id.changeFavoriteStatusIV ->
+                actionsListener.onPetFavoriteStatus(pet)
+        }
+    }
 
     class PetViewHolder(val binding: ItemPetBinding) : RecyclerView.ViewHolder(binding.root)
 }
