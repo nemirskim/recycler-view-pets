@@ -24,10 +24,16 @@ class PetAdapter : RecyclerView.Adapter<PetAdapter.PetViewHolder>() {
 
     override fun onBindViewHolder(holder: PetViewHolder, position: Int) {
         val pet = pets[position]
+        val context = holder.itemView.context
         with(holder.binding) {
             holder.itemView.tag = pet
             petNameTV.text = pet.name
-            petAgeTV.text= pet.age.toString()
+            petAgeTV.text =
+                if (pet.age == 1) {
+                    context.getString(R.string.a_year)
+                } else {
+                    context.getString(R.string.age, pet.age.toString())
+                }
             if (pet.photo.isNotBlank()) {
                 Glide.with(petIV.context)
                     .load(pet.photo)
