@@ -1,11 +1,10 @@
 package com.example.recyclerviewpets
 
 import android.annotation.SuppressLint
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recyclerviewpets.databinding.ItemPetBinding
@@ -19,8 +18,7 @@ interface PetActionsListener {
 class PetAdapter(
     private val actionsListener: PetActionsListener
 ) : RecyclerView.Adapter<PetAdapter.PetViewHolder>(),
-    View.OnClickListener,
-    TextView.OnEditorActionListener {
+    View.OnClickListener {
     var pets = emptyList<Pet>()
         @SuppressLint("NotifyDataSetChanged")
         set(newValue) {
@@ -32,7 +30,6 @@ class PetAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemPetBinding.inflate(inflater, parent, false)
 
-        binding.petNameET.setOnEditorActionListener(this)
         binding.changeFavoriteStatusIV.setOnClickListener(this)
 
         return PetViewHolder(binding)
@@ -76,7 +73,29 @@ class PetAdapter(
             }
 
             renameIV.setOnClickListener {
-                petNameET.isEnabled = true
+                petNameET.isEnabled = !petNameET.isEnabled
+                if (petNameET.isEnabled) {
+                    renameIV.setImageResource(R.drawable.ic_rename_pressed)
+                } else {
+                    renameIV.setImageResource(R.drawable.ic_rename_unpressed)
+                }
+            }
+
+            petNameET.setOnEditorActionListener { v, actionId, event ->
+                val renamedPet = v.tag as Pet
+                when (v.id) {
+                    R.id.petNameET -> {
+                        v.isEnabled = false
+                        renameIV.setImageResource(R.drawable.ic_rename_unpressed)
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            actionsListener.onPetRename(renamedPet, v.text.toString())
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    else -> false
+                }
             }
         }
     }
@@ -89,19 +108,6 @@ class PetAdapter(
         when (v.id) {
             R.id.changeFavoriteStatusIV ->
                 actionsListener.onPetFavoriteStatus(pet)
-        }
-    }
-
-    // TextView.SetOnEditorActionListener
-    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
-        val pet = v.tag as Pet
-        return when (v.id) {
-            R.id.petNameET -> {
-                v.isEnabled = false
-                actionsListener.onPetRename(pet, v.text.toString())
-                true
-            }
-            else -> false
         }
     }
 
