@@ -40,8 +40,8 @@ class PetService {
     fun renamePet(pet: Pet, name: String) {
         val index = getIndex(pet)
         if (index != -1) {
-            val nPet = pet.copy(name = name)
-            pets[index] = nPet
+            val renamedPet = pet.copy(name = name)
+            pets[index] = renamedPet
             notifyChanges()
         }
     }
