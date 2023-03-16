@@ -1,6 +1,5 @@
 package com.example.recyclerviewpets.services
 
-import android.util.Log
 import com.example.recyclerviewpets.models.Pet
 import com.github.javafaker.Faker
 import kotlin.random.Random
@@ -41,8 +40,8 @@ class PetService {
     fun renamePet(pet: Pet, name: String) {
         val index = getIndex(pet)
         if (index != -1) {
-            val nPet = pet.copy(name = name)
-            pets[index] = nPet
+            val renamedPet = pet.copy(name = name)
+            pets[index] = renamedPet
             notifyChanges()
         }
     }
