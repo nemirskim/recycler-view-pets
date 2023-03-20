@@ -24,26 +24,21 @@ class PetService {
 
     fun changeFavoriteStatus(pet: Pet) {
         val index = getIndex(pet)
-        if (index != -1) {
-            if (pet.isFavorite) {
-                val ordinaryPet = pet.copy(isFavorite = false)
-                pets[index] = ordinaryPet
-                notifyChanges()
-            } else {
-                val favoritePet = pet.copy(isFavorite = true)
-                pets[index] = favoritePet
-                notifyChanges()
-            }
-        }
+        if (index == -1) return
+        val togglePet =
+            if (pet.isFavorite) pet.copy(isFavorite = false)
+            else pet.copy(isFavorite = true)
+        pets[index] = togglePet
+        notifyChanges()
     }
 
     fun renamePet(pet: Pet, name: String) {
         val index = getIndex(pet)
-        if (index != -1) {
-            val renamedPet = pet.copy(name = name)
-            pets[index] = renamedPet
-            notifyChanges()
-        }
+        if (index == -1) return
+        val renamedPet = pet.copy(name = name)
+        pets[index] = renamedPet
+        notifyChanges()
+
     }
 
     fun deletePet(pet: Pet) {
