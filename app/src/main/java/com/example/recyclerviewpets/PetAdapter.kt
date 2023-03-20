@@ -13,6 +13,7 @@ import com.example.recyclerviewpets.models.Pet
 interface PetActionsListener {
     fun onPetFavoriteStatus(pet: Pet)
     fun onPetRename(pet: Pet, name: String)
+    fun onPetDelete(pet: Pet)
 }
 
 class PetAdapter(
@@ -31,6 +32,7 @@ class PetAdapter(
         val binding = ItemPetBinding.inflate(inflater, parent, false)
 
         binding.changeFavoriteStatusIV.setOnClickListener(this)
+        binding.deleteIV.setOnClickListener(this)
 
         return PetViewHolder(binding)
     }
@@ -108,6 +110,8 @@ class PetAdapter(
         when (v.id) {
             R.id.changeFavoriteStatusIV ->
                 actionsListener.onPetFavoriteStatus(pet)
+            R.id.deleteIV ->
+                actionsListener.onPetDelete(pet)
         }
     }
 

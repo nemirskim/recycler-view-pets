@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Recycler View Pets</string>
     <string name="pet_photo">Pet photo</string>
     <string name="pet_name">Pet name</string>
@@ -7,4 +7,8 @@
     <string name="favorite_pet">Favorite pet</string>
     <string name="rename_pet">Rename pet</string>
     <string name="delete_pet">Delete pet</string>
+    <string name="delete_pet_title">Delete %s</string>
+    <string name="delete_pet_message" tools:ignore="Typos">Oh no! Do you really wanna delete this fluffy thing %s?</string>
+    <string name="ok">OK</string>
+    <string name="no">No</string>
 </resources>
