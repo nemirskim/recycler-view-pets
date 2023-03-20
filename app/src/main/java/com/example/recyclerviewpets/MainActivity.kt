@@ -40,4 +40,8 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
     override fun onPetFavoriteStatus(pet: Pet) {
         petService.changeFavoriteStatus(pet)
     }
+
+    override fun onPetRename(pet: Pet, name: String) {
+        petService.renamePet(pet, name)
+    }
 }
