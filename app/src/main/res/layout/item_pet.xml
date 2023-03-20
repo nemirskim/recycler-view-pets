@@ -42,16 +42,25 @@
                 android:orientation="vertical"
                 android:layout_weight="2">
 
-                <TextView
-                    android:id="@+id/petNameTV"
+                <EditText
+                    android:id="@+id/petNameET"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
+                    android:autofillHints="name"
+                    android:hint="@string/pet_name"
+                    android:inputType="textNoSuggestions"
+                    android:imeOptions="actionDone"
+                    android:background="@null"
                     android:fontFamily="@font/zilla_slab_semibold"
-                    android:text="Pet name"
                     android:textColor="@color/black"
-                    android:textSize="30sp" />
+                    android:maxEms="4"
+                    android:textSize="40sp"
+                    android:textAlignment="center"
+                    android:lines="1"
+                    android:enabled="false"
+                    android:scrollHorizontally="false" />
 
                 <TextView
                     android:id="@+id/petAgeTV"
@@ -65,7 +74,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_margin="20dp"
+                    android:layout_margin="14dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -81,7 +90,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_rename"
+                        app:srcCompat="@drawable/ic_rename_unpressed"
                         android:contentDescription="@string/rename_pet" />
 
                     <ImageView

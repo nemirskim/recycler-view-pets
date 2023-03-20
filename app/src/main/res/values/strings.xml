@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Recycler View Pets</string>
     <string name="pet_photo">Pet photo</string>
+    <string name="pet_name">Pet name</string>
     <string name="age">%s years</string>
     <string name="a_year">1 year</string>
     <string name="favorite_pet">Favorite pet</string>
