@@ -31,8 +31,36 @@ class PetAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemPetBinding.inflate(inflater, parent, false)
 
-        binding.changeFavoriteStatusIV.setOnClickListener(this)
-        binding.deleteIV.setOnClickListener(this)
+        with(binding) {
+            changeFavoriteStatusIV.setOnClickListener(this@PetAdapter)
+            deleteIV.setOnClickListener(this@PetAdapter)
+
+            renameIV.setOnClickListener {
+                petNameET.isEnabled = !petNameET.isEnabled
+                if (petNameET.isEnabled) {
+                    renameIV.setImageResource(R.drawable.ic_rename_pressed)
+                } else {
+                    renameIV.setImageResource(R.drawable.ic_rename_unpressed)
+                }
+            }
+
+            petNameET.setOnEditorActionListener { v, actionId, event ->
+                val renamedPet = v.tag as Pet
+                when (v.id) {
+                    R.id.petNameET -> {
+                        v.isEnabled = false
+                        renameIV.setImageResource(R.drawable.ic_rename_unpressed)
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            actionsListener.onPetRename(renamedPet, v.text.toString())
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    else -> false
+                }
+            }
+        }
 
         return PetViewHolder(binding)
     }
@@ -72,32 +100,6 @@ class PetAdapter(
                 changeFavoriteStatusIV.setImageResource(R.drawable.ic_star_fill)
             } else {
                 changeFavoriteStatusIV.setImageResource(R.drawable.ic_star_border)
-            }
-
-            renameIV.setOnClickListener {
-                petNameET.isEnabled = !petNameET.isEnabled
-                if (petNameET.isEnabled) {
-                    renameIV.setImageResource(R.drawable.ic_rename_pressed)
-                } else {
-                    renameIV.setImageResource(R.drawable.ic_rename_unpressed)
-                }
-            }
-
-            petNameET.setOnEditorActionListener { v, actionId, event ->
-                val renamedPet = v.tag as Pet
-                when (v.id) {
-                    R.id.petNameET -> {
-                        v.isEnabled = false
-                        renameIV.setImageResource(R.drawable.ic_rename_unpressed)
-                        if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            actionsListener.onPetRename(renamedPet, v.text.toString())
-                            true
-                        } else {
-                            false
-                        }
-                    }
-                    else -> false
-                }
             }
         }
     }
