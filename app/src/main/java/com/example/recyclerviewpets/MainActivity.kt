@@ -1,7 +1,10 @@
 package com.example.recyclerviewpets
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewpets.databinding.ActivityMainBinding
 import com.example.recyclerviewpets.models.Pet
@@ -14,7 +17,12 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
     private val petService: PetService
         get() = (applicationContext as App).petService
     private val petListener: PetListener = {
-        adapter.pets = it
+        if (it.isNotEmpty()) {
+            adapter.pets = it
+        } else {
+            binding.rV.visibility = View.GONE
+            binding.noPetsTV.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,5 +51,19 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
 
     override fun onPetRename(pet: Pet, name: String) {
         petService.renamePet(pet, name)
+    }
+
+    override fun onPetDelete(pet: Pet) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(resources.getString(R.string.delete_pet_title, pet.name))
+            .setMessage(resources.getString(R.string.delete_pet_message, pet.name))
+            .setPositiveButton(R.string.ok) { _, which ->
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    petService.deletePet(pet)
+                }
+            }
+            .setNegativeButton(R.string.no) {_, _ -> }
+            .create()
+        dialog.show()
     }
 }
