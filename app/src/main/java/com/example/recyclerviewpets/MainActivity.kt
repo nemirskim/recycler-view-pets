@@ -3,6 +3,7 @@ package com.example.recyclerviewpets
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewpets.databinding.ActivityMainBinding
@@ -16,7 +17,12 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
     private val petService: PetService
         get() = (applicationContext as App).petService
     private val petListener: PetListener = {
-        adapter.pets = it
+        if (it.isNotEmpty()) {
+            adapter.pets = it
+        } else {
+            binding.rV.visibility = View.GONE
+            binding.noPetsTV.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

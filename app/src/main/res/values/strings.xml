@@ -11,4 +11,5 @@
     <string name="delete_pet_message" tools:ignore="Typos">Oh no! Do you really wanna delete this fluffy thing %s?</string>
     <string name="ok">OK</string>
     <string name="no">No</string>
+    <string name="no_pets">There are no pets</string>
 </resources>
