@@ -4,11 +4,11 @@ import com.example.recyclerviewpets.models.Pet
 import com.github.javafaker.Faker
 import kotlin.random.Random
 
-typealias PetListener = (pets: List<Pet>) -> Unit
+typealias PetServiceListener = (pets: List<Pet>) -> Unit
 
 class PetService {
     private var pets = mutableListOf<Pet>()
-    private var listeners = mutableSetOf<PetListener>()
+    private var listeners = mutableSetOf<PetServiceListener>()
 
     init {
         val faker = Faker.instance()
@@ -49,12 +49,19 @@ class PetService {
         }
     }
 
-    fun addListener(listener: PetListener) {
+    fun showFavoritePets() {
+        val favPets = pets.filter { it.isFavorite }.toMutableList()
+        listeners.forEach { it.invoke(favPets) }
+    }
+
+    fun showAllPets() = notifyChanges()
+
+    fun addListener(listener: PetServiceListener) {
         listeners.add(listener)
         listener.invoke(pets)
     }
 
-    fun removeListener(listener: PetListener) = listeners.remove(listener)
+    fun removeListener(listener: PetServiceListener) = listeners.remove(listener)
 
     private fun getPet(id: Long): Pet = pets.first { it.id == id }
 
