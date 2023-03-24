@@ -16,9 +16,27 @@
         android:textColor="@color/white"
         android:paddingHorizontal="10dp"
         android:backgroundTint="@color/teal_700"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="85dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/sortByNameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sort_by_name"
+        android:textStyle="italic"
+        android:textColor="@color/white"
+        android:paddingHorizontal="10dp"
+        android:backgroundTint="@color/teal_700"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/favoritePetsButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="favoritePetsButton,sortByNameButton" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rV"
