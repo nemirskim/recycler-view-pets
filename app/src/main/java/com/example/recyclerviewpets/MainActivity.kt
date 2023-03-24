@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
     private lateinit var adapter: PetAdapter
     private val petService: PetService
         get() = (applicationContext as App).petService
-    private val petListener: PetListener = {
+    private val petServiceListener: PetListener = {
         if (it.isNotEmpty()) {
             adapter.pets = it
         } else {
@@ -36,12 +36,12 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
         binding.rV.layoutManager = layoutManager
         binding.rV.adapter = adapter
 
-        petService.addListener(petListener)
+        petService.addListener(petServiceListener)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        petService.removeListener(petListener)
+        petService.removeListener(petServiceListener)
     }
 
 //    PetActionsListener
