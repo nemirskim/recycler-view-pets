@@ -37,6 +37,14 @@ class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListe
                 it.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_700))
             }
         }
+
+        binding.sortByNameButton.setOnClickListener {
+            if (vm.toggleIsSortedByName()) {
+                it.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
+            } else {
+                it.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_700))
+            }
+        }
     }
 
     // PetsViewModelListener
