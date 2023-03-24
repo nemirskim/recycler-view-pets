@@ -49,6 +49,13 @@ class PetService {
         }
     }
 
+    fun showFavoritePets() {
+        val favPets = pets.filter { it.isFavorite }.toMutableList()
+        listeners.forEach { it.invoke(favPets) }
+    }
+
+    fun showAllPets() = notifyChanges()
+
     fun addListener(listener: PetListener) {
         listeners.add(listener)
         listener.invoke(pets)
