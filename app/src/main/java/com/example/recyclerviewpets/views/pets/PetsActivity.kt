@@ -7,31 +7,16 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recyclerviewpets.App
 import com.example.recyclerviewpets.PetActionsListener
 import com.example.recyclerviewpets.PetAdapter
 import com.example.recyclerviewpets.R
 import com.example.recyclerviewpets.databinding.ActivityMainBinding
 import com.example.recyclerviewpets.models.Pet
-import com.example.recyclerviewpets.services.PetListener
-import com.example.recyclerviewpets.services.PetService
 
-class PetsActivity : AppCompatActivity(), PetActionsListener {
+class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: PetAdapter
-    private val petService: PetService
-        get() = (applicationContext as App).petService
-    private val petServiceListener: PetListener = {
-        if (it.isNotEmpty()) {
-            binding.noPetsTV.visibility = View.GONE
-            binding.rV.visibility = View.VISIBLE
-            adapter.pets = it
-        } else {
-            binding.rV.visibility = View.GONE
-            binding.noPetsTV.visibility = View.VISIBLE
-        }
-    }
-    private var isFavoritePetsPressed = false
+    private lateinit var vm: PetsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,41 +24,40 @@ class PetsActivity : AppCompatActivity(), PetActionsListener {
         setContentView(binding.root)
 
         adapter = PetAdapter(this)
+        vm = PetsViewModel(this)
 
         val layoutManager = LinearLayoutManager(this)
         binding.rV.layoutManager = layoutManager
         binding.rV.adapter = adapter
 
-        petService.addListener(petServiceListener)
-
         binding.favoritePetsButton.setOnClickListener {
-            isFavoritePetsPressed = !isFavoritePetsPressed
-            if (isFavoritePetsPressed) {
+            if (vm.toggleIsFavorite()) {
                 it.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
-                showFavoritePets()
             } else {
                 it.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_700))
-                showAllPets()
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        petService.removeListener(petServiceListener)
+    // PetsViewModelListener
+    override fun getPets(pets: List<Pet>) {
+        if (pets.isNotEmpty()) {
+            binding.noPetsTV.visibility = View.GONE
+            binding.rV.visibility = View.VISIBLE
+            adapter.pets = pets
+        } else {
+            binding.rV.visibility = View.GONE
+            binding.noPetsTV.visibility = View.VISIBLE
+        }
     }
 
-    private fun showFavoritePets() = petService.showFavoritePets()
-
-    private fun showAllPets() = petService.showAllPets()
-
-//    PetActionsListener
+    // PetActionsListener
     override fun onPetFavoriteStatus(pet: Pet) {
-        petService.changeFavoriteStatus(pet)
+        vm.changeFavoriteStatus(pet)
     }
 
     override fun onPetRename(pet: Pet, name: String) {
-        petService.renamePet(pet, name)
+        vm.renamePet(pet, name)
     }
 
     override fun onPetDelete(pet: Pet) {
@@ -82,7 +66,7 @@ class PetsActivity : AppCompatActivity(), PetActionsListener {
             .setMessage(resources.getString(R.string.delete_pet_message, pet.name))
             .setPositiveButton(R.string.ok) { _, which ->
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    petService.deletePet(pet)
+                    vm.deletePet(pet)
                 }
             }
             .setNegativeButton(R.string.no) { _, _ -> }
