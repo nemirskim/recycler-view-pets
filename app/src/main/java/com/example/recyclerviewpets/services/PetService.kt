@@ -49,11 +49,6 @@ class PetService {
         }
     }
 
-    fun showFavoritePets() {
-        val favPets = pets.filter { it.isFavorite }.toMutableList()
-        listeners.forEach { it.invoke(favPets) }
-    }
-
     fun showAllPets() = notifyChanges()
 
     fun addListener(listener: PetServiceListener) {
@@ -61,7 +56,7 @@ class PetService {
         listener.invoke(pets)
     }
 
-    fun removeListener(listener: PetServiceListener) = listeners.remove(listener)
+    // fun removeListener(listener: PetServiceListener) = listeners.remove(listener)
 
     private fun getPet(id: Long): Pet = pets.first { it.id == id }
 
