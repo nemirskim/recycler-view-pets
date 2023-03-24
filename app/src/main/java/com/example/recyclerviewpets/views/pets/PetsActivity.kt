@@ -1,4 +1,4 @@
-package com.example.recyclerviewpets
+package com.example.recyclerviewpets.views.pets
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -7,12 +7,16 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.recyclerviewpets.App
+import com.example.recyclerviewpets.PetActionsListener
+import com.example.recyclerviewpets.PetAdapter
+import com.example.recyclerviewpets.R
 import com.example.recyclerviewpets.databinding.ActivityMainBinding
 import com.example.recyclerviewpets.models.Pet
 import com.example.recyclerviewpets.services.PetListener
 import com.example.recyclerviewpets.services.PetService
 
-class MainActivity : AppCompatActivity(), PetActionsListener {
+class PetsActivity : AppCompatActivity(), PetActionsListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: PetAdapter
     private val petService: PetService
@@ -81,7 +85,7 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
                     petService.deletePet(pet)
                 }
             }
-            .setNegativeButton(R.string.no) {_, _ -> }
+            .setNegativeButton(R.string.no) { _, _ -> }
             .create()
         dialog.show()
     }
