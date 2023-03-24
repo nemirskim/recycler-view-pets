@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewpets.databinding.ActivityMainBinding
 import com.example.recyclerviewpets.models.Pet
@@ -18,12 +19,15 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
         get() = (applicationContext as App).petService
     private val petServiceListener: PetListener = {
         if (it.isNotEmpty()) {
+            binding.noPetsTV.visibility = View.GONE
+            binding.rV.visibility = View.VISIBLE
             adapter.pets = it
         } else {
             binding.rV.visibility = View.GONE
             binding.noPetsTV.visibility = View.VISIBLE
         }
     }
+    private var isFavoritePetsPressed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +41,27 @@ class MainActivity : AppCompatActivity(), PetActionsListener {
         binding.rV.adapter = adapter
 
         petService.addListener(petServiceListener)
+
+        binding.favoritePetsButton.setOnClickListener {
+            isFavoritePetsPressed = !isFavoritePetsPressed
+            if (isFavoritePetsPressed) {
+                it.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
+                showFavoritePets()
+            } else {
+                it.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_700))
+                showAllPets()
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         petService.removeListener(petServiceListener)
     }
+
+    private fun showFavoritePets() = petService.showFavoritePets()
+
+    private fun showAllPets() = petService.showAllPets()
 
 //    PetActionsListener
     override fun onPetFavoriteStatus(pet: Pet) {

@@ -12,4 +12,5 @@
     <string name="ok">OK</string>
     <string name="no">No</string>
     <string name="no_pets">There are no pets</string>
+    <string name="only">only</string>
 </resources>
