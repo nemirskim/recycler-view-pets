@@ -1,6 +1,7 @@
 package com.example.recyclerviewpets.views.pets
 
 import com.example.recyclerviewpets.models.Pet
+import com.example.recyclerviewpets.models.PetType
 import com.example.recyclerviewpets.services.PetService
 import com.example.recyclerviewpets.services.PetServiceListener
 
@@ -14,6 +15,7 @@ class PetsViewModel(
     private val petService = PetService()
     private var isFavorite = false
     private var isSortedByName = false
+    private var petType = PetType.CAT
 
     init {
         petService.addListener(this)
@@ -31,6 +33,11 @@ class PetsViewModel(
         return isSortedByName
     }
 
+    fun changeSortType(type: PetType) {
+        petType = type
+        petService.showAllPets()
+    }
+
     fun changeFavoriteStatus(pet: Pet) = petService.changeFavoriteStatus(pet)
 
     fun renamePet(pet: Pet, name: String) = petService.renamePet(pet, name)
@@ -45,6 +52,13 @@ class PetsViewModel(
         }
         if (isSortedByName) {
             currentPets = currentPets.sortedBy { it.name }
+        }
+
+        currentPets = when (petType) {
+            PetType.CAT -> currentPets.filter { it.type == PetType.CAT }
+            PetType.DOG -> currentPets.filter { it.type == PetType.DOG }
+            PetType.BIRD -> currentPets.filter { it.type == PetType.BIRD }
+            PetType.PIG -> currentPets.filter { it.type == PetType.PIG }
         }
         listener.getPets(currentPets)
     }

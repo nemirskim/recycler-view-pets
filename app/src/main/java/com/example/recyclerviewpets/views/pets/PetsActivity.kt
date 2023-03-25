@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -15,7 +16,11 @@ import com.example.recyclerviewpets.databinding.PetsActivityBinding
 import com.example.recyclerviewpets.models.Pet
 import com.example.recyclerviewpets.models.PetType
 
-class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListener {
+class PetsActivity :
+    AppCompatActivity(),
+    PetsViewModelListener,
+    PetActionsListener,
+    AdapterView.OnItemSelectedListener {
     private lateinit var binding: PetsActivityBinding
     private lateinit var adapter: PetAdapter
     private lateinit var vm: PetsViewModel
@@ -35,8 +40,9 @@ class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListe
         val spinnerAdapter =
             ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item,
-                PetType.values().map { it.raw } )
+                PetType.values().map { it.raw })
         binding.sortByPetTypeSpinner.adapter = spinnerAdapter
+        binding.sortByPetTypeSpinner.setOnItemSelectedListener(this)
 
         binding.favoritePetsButton.setOnClickListener {
             if (vm.toggleIsFavorite()) {
@@ -88,5 +94,15 @@ class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListe
             .setNegativeButton(R.string.no) { _, _ -> }
             .create()
         dialog.show()
+    }
+
+    //  AdapterView.OnItemSelectedListener
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val type = PetType.values()[position]
+        vm.changeSortType(type)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }
