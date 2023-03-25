@@ -1,6 +1,7 @@
 package com.example.recyclerviewpets.services
 
 import com.example.recyclerviewpets.models.Pet
+import com.example.recyclerviewpets.models.PetType
 import com.github.javafaker.Faker
 import kotlin.random.Random
 
@@ -17,7 +18,8 @@ class PetService {
                 Random.nextLong(1_000_000_000, 9_999_999_999),
                 faker.name().firstName(),
                 Random.nextInt(1, 18),
-                PHOTOS[it]
+                PHOTOS[it],
+                PetType.values().random()
             )
         }.toMutableList()
     }
