@@ -10,7 +10,7 @@
         android:id="@+id/favoritePetsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
+        android:layout_marginStart="45dp"
         android:backgroundTint="@color/teal_700"
         android:drawableEnd="@drawable/ic_star_fill"
         android:paddingHorizontal="10dp"

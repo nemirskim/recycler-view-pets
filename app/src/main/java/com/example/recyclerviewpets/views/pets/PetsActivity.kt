@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.example.recyclerviewpets.PetAdapter
 import com.example.recyclerviewpets.R
 import com.example.recyclerviewpets.databinding.PetsActivityBinding
 import com.example.recyclerviewpets.models.Pet
+import com.example.recyclerviewpets.models.PetType
 
 class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListener {
     private lateinit var binding: PetsActivityBinding
@@ -29,6 +31,12 @@ class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListe
         val layoutManager = LinearLayoutManager(this)
         binding.rV.layoutManager = layoutManager
         binding.rV.adapter = adapter
+
+        val spinnerAdapter =
+            ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                PetType.values().map { it.raw } )
+        binding.sortByPetTypeSpinner.adapter = spinnerAdapter
 
         binding.favoritePetsButton.setOnClickListener {
             if (vm.toggleIsFavorite()) {
