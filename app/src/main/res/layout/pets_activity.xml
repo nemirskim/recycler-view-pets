@@ -10,13 +10,13 @@
         android:id="@+id/favoritePetsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_star_fill"
-        android:text="@string/only"
-        android:textStyle="italic"
-        android:textColor="@color/white"
-        android:paddingHorizontal="10dp"
+        android:layout_marginStart="45dp"
         android:backgroundTint="@color/teal_700"
-        android:layout_marginStart="85dp"
+        android:drawableEnd="@drawable/ic_star_fill"
+        android:paddingHorizontal="10dp"
+        android:text="@string/only"
+        android:textColor="@color/white"
+        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,19 +24,28 @@
         android:id="@+id/sortByNameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sort_by_name"
-        android:textStyle="italic"
-        android:textColor="@color/white"
-        android:paddingHorizontal="10dp"
-        android:backgroundTint="@color/teal_700"
         android:layout_marginStart="10dp"
+        android:backgroundTint="@color/teal_700"
+        android:paddingHorizontal="10dp"
+        android:text="@string/sort_by_name"
+        android:textColor="@color/white"
+        android:textStyle="italic"
         app:layout_constraintStart_toEndOf="@id/favoritePetsButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/sortByPetTypeSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sortByNameButton"
+        app:layout_constraintStart_toEndOf="@id/sortByNameButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="favoritePetsButton,sortByNameButton" />
+        app:constraint_referenced_ids="favoritePetsButton,sortByNameButton, sortByPetTypeSpinner" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rV"

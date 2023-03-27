@@ -4,23 +4,29 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewpets.PetActionsListener
 import com.example.recyclerviewpets.PetAdapter
 import com.example.recyclerviewpets.R
-import com.example.recyclerviewpets.databinding.ActivityMainBinding
+import com.example.recyclerviewpets.databinding.PetsActivityBinding
 import com.example.recyclerviewpets.models.Pet
 
-class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListener {
-    private lateinit var binding: ActivityMainBinding
+class PetsActivity :
+    AppCompatActivity(),
+    PetsViewModelListener,
+    PetActionsListener,
+    AdapterView.OnItemSelectedListener {
+    private lateinit var binding: PetsActivityBinding
     private lateinit var adapter: PetAdapter
     private lateinit var vm: PetsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = PetsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         adapter = PetAdapter(this)
@@ -29,6 +35,15 @@ class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListe
         val layoutManager = LinearLayoutManager(this)
         binding.rV.layoutManager = layoutManager
         binding.rV.adapter = adapter
+
+        val spinnerAdapter =
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                vm.getPetTypeSortCases()
+            )
+        binding.sortByPetTypeSpinner.adapter = spinnerAdapter
+        binding.sortByPetTypeSpinner.onItemSelectedListener = this
 
         binding.favoritePetsButton.setOnClickListener {
             if (vm.toggleIsFavorite()) {
@@ -81,4 +96,10 @@ class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListe
             .create()
         dialog.show()
     }
+
+    //  AdapterView.OnItemSelectedListener
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
+        vm.changeSortType(position)
+
+    override fun onNothingSelected(parent: AdapterView<*>?){}
 }
