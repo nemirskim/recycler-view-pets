@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recyclerviewpets.databinding.ItemPetBinding
 import com.example.recyclerviewpets.models.Pet
+import com.example.recyclerviewpets.models.PetType
 
 interface PetActionsListener {
     fun onPetFavoriteStatus(pet: Pet)
@@ -74,6 +75,13 @@ class PetAdapter(
             changeFavoriteStatusIV.tag = pet
             renameIV.tag = pet
             deleteIV.tag = pet
+
+            when(pet.type) {
+                PetType.CAT -> typeMarker.setBackgroundResource(R.color.cat)
+                PetType.DOG -> typeMarker.setBackgroundResource(R.color.dog)
+                PetType.BIRD -> typeMarker.setBackgroundResource(R.color.bird)
+                PetType.PIG -> typeMarker.setBackgroundResource(R.color.pig)
+            }
 
             petNameET.setText(pet.name)
 

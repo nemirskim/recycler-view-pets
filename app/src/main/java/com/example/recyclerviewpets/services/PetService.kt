@@ -1,12 +1,25 @@
 package com.example.recyclerviewpets.services
 
 import com.example.recyclerviewpets.models.Pet
+import com.example.recyclerviewpets.models.PetType
 import com.github.javafaker.Faker
 import kotlin.random.Random
 
 typealias PetServiceListener = (pets: List<Pet>) -> Unit
 
 class PetService {
+    private val petTypes: List<PetType> = listOf(
+        PetType.DOG,
+        PetType.CAT,
+        PetType.BIRD,
+        PetType.DOG,
+        PetType.CAT,
+        PetType.DOG,
+        PetType.BIRD,
+        PetType.PIG,
+        PetType.CAT,
+        PetType.DOG
+    )
     private var pets = mutableListOf<Pet>()
     private var listeners = mutableSetOf<PetServiceListener>()
 
@@ -17,7 +30,8 @@ class PetService {
                 Random.nextLong(1_000_000_000, 9_999_999_999),
                 faker.name().firstName(),
                 Random.nextInt(1, 18),
-                PHOTOS[it]
+                PHOTOS[it],
+                petTypes[it]
             )
         }.toMutableList()
     }

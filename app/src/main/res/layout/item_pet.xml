@@ -24,6 +24,12 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <View
+                android:id="@+id/typeMarker"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/teal_700" />
+
             <ImageView
                 android:id="@+id/petIV"
                 android:layout_width="0dp"

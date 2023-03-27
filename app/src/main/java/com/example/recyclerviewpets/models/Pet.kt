@@ -5,5 +5,6 @@ data class Pet(
     val name: String,
     val age: Int,
     val photo: String,
+    val type: PetType,
     val isFavorite: Boolean = false
 )
