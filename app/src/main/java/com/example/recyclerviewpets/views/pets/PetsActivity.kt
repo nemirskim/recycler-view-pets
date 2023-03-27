@@ -14,7 +14,6 @@ import com.example.recyclerviewpets.PetAdapter
 import com.example.recyclerviewpets.R
 import com.example.recyclerviewpets.databinding.PetsActivityBinding
 import com.example.recyclerviewpets.models.Pet
-import com.example.recyclerviewpets.models.PetType
 
 class PetsActivity :
     AppCompatActivity(),
@@ -41,7 +40,7 @@ class PetsActivity :
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
-                vm.petTypes.map { it.raw }
+                vm.getPetTypeSortCases()
             )
         binding.sortByPetTypeSpinner.adapter = spinnerAdapter
         binding.sortByPetTypeSpinner.onItemSelectedListener = this
@@ -99,12 +98,8 @@ class PetsActivity :
     }
 
     //  AdapterView.OnItemSelectedListener
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val type = PetType.values()[position]
-        vm.changeSortType(type)
-    }
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
+        vm.changeSortType(position)
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
-    }
+    override fun onNothingSelected(parent: AdapterView<*>?){}
 }

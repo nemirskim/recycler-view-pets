@@ -12,15 +12,22 @@ interface PetsViewModelListener {
 class PetsViewModel(
     private val listener: PetsViewModelListener
 ) : PetServiceListener {
-    internal val petTypes = PetType.values()
     private val petService = PetService()
     private var isFavorite = false
     private var isSortedByName = false
-    private var petType = PetType.CAT
+    private var petType: PetType? = null
 
     init {
         petService.addListener(this)
     }
+
+    fun getPetTypeSortCases() =
+        PetType.values()
+            .map { it.raw }
+            .toMutableList()
+            .apply {
+                this.add(0, "All")
+            }
 
     fun toggleIsFavorite() : Boolean {
         isFavorite = !isFavorite
@@ -34,8 +41,12 @@ class PetsViewModel(
         return isSortedByName
     }
 
-    fun changeSortType(type: PetType) {
-        petType = type
+    fun changeSortType(position: Int) {
+        if (position == 0) {
+            petType = null
+        } else {
+            petType = PetType.values()[position - 1]
+        }
         petService.showAllPets()
     }
 
@@ -60,6 +71,7 @@ class PetsViewModel(
             PetType.DOG -> currentPets.filter { it.type == PetType.DOG }
             PetType.BIRD -> currentPets.filter { it.type == PetType.BIRD }
             PetType.PIG -> currentPets.filter { it.type == PetType.PIG }
+            null -> currentPets
         }
         listener.getPets(currentPets)
     }
