@@ -10,17 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewpets.PetActionsListener
 import com.example.recyclerviewpets.PetAdapter
 import com.example.recyclerviewpets.R
-import com.example.recyclerviewpets.databinding.ActivityMainBinding
+import com.example.recyclerviewpets.databinding.PetsActivityBinding
 import com.example.recyclerviewpets.models.Pet
 
 class PetsActivity : AppCompatActivity(), PetsViewModelListener, PetActionsListener {
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: PetsActivityBinding
     private lateinit var adapter: PetAdapter
     private lateinit var vm: PetsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = PetsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         adapter = PetAdapter(this)
