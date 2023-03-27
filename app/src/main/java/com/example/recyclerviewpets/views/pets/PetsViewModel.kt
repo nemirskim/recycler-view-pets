@@ -12,6 +12,7 @@ interface PetsViewModelListener {
 class PetsViewModel(
     private val listener: PetsViewModelListener
 ) : PetServiceListener {
+    internal val petTypes = PetType.values()
     private val petService = PetService()
     private var isFavorite = false
     private var isSortedByName = false

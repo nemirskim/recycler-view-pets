@@ -41,7 +41,7 @@ class PetsActivity :
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
-                PetType.values().map { it.raw }
+                vm.petTypes.map { it.raw }
             )
         binding.sortByPetTypeSpinner.adapter = spinnerAdapter
         binding.sortByPetTypeSpinner.onItemSelectedListener = this
