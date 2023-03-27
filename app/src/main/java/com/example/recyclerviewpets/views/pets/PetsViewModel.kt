@@ -10,7 +10,7 @@ interface PetsViewModelListener {
 }
 
 class PetsViewModel(
-    val listener: PetsViewModelListener
+    private val listener: PetsViewModelListener
 ) : PetServiceListener {
     private val petService = PetService()
     private var isFavorite = false

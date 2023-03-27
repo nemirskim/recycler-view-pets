@@ -8,6 +8,18 @@ import kotlin.random.Random
 typealias PetServiceListener = (pets: List<Pet>) -> Unit
 
 class PetService {
+    private val petTypes: List<PetType> = listOf(
+        PetType.DOG,
+        PetType.CAT,
+        PetType.BIRD,
+        PetType.DOG,
+        PetType.CAT,
+        PetType.DOG,
+        PetType.BIRD,
+        PetType.PIG,
+        PetType.CAT,
+        PetType.DOG
+    )
     private var pets = mutableListOf<Pet>()
     private var listeners = mutableSetOf<PetServiceListener>()
 
@@ -19,7 +31,7 @@ class PetService {
                 faker.name().firstName(),
                 Random.nextInt(1, 18),
                 PHOTOS[it],
-                PetType.values().random()
+                petTypes[it]
             )
         }.toMutableList()
     }

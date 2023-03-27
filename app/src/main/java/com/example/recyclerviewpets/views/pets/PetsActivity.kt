@@ -38,11 +38,13 @@ class PetsActivity :
         binding.rV.adapter = adapter
 
         val spinnerAdapter =
-            ArrayAdapter<String>(this,
+            ArrayAdapter(
+                this,
                 android.R.layout.simple_spinner_dropdown_item,
-                PetType.values().map { it.raw })
+                PetType.values().map { it.raw }
+            )
         binding.sortByPetTypeSpinner.adapter = spinnerAdapter
-        binding.sortByPetTypeSpinner.setOnItemSelectedListener(this)
+        binding.sortByPetTypeSpinner.onItemSelectedListener = this
 
         binding.favoritePetsButton.setOnClickListener {
             if (vm.toggleIsFavorite()) {
