@@ -70,10 +70,6 @@ class PetService {
         listener.invoke(pets)
     }
 
-    // fun removeListener(listener: PetServiceListener) = listeners.remove(listener)
-
-    private fun getPet(id: Long): Pet = pets.first { it.id == id }
-
     private fun getIndex(pet: Pet): Int = pets.indexOfFirst { it.id == pet.id }
 
     private fun notifyChanges() = listeners.forEach { it.invoke(pets) }
