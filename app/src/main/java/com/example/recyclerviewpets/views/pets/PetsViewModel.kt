@@ -4,6 +4,7 @@ import com.example.recyclerviewpets.models.Pet
 import com.example.recyclerviewpets.models.PetType
 import com.example.recyclerviewpets.services.PetService
 import com.example.recyclerviewpets.services.PetServiceListener
+import kotlin.properties.Delegates
 
 interface PetsViewModelListener {
     fun getPets(pets: List<Pet>)
@@ -12,6 +13,7 @@ interface PetsViewModelListener {
 class PetsViewModel(
     private val listener: PetsViewModelListener
 ) : PetServiceListener {
+    internal var isFullListOfExistingPets by Delegates.notNull<Boolean>()
     private val petService = PetService()
     private var isFavorite = false
     private var isSortedByName = false
@@ -42,10 +44,10 @@ class PetsViewModel(
     }
 
     fun changeSortType(position: Int) {
-        if (position == 0) {
-            petType = null
+        petType = if (position == 0) {
+            null
         } else {
-            petType = PetType.values()[position - 1]
+            PetType.values()[position - 1]
         }
         petService.showAllPets()
     }
@@ -73,6 +75,9 @@ class PetsViewModel(
             PetType.PIG -> currentPets.filter { it.type == PetType.PIG }
             null -> currentPets
         }
+
+        isFullListOfExistingPets = currentPets.size == pets.size
+
         listener.getPets(currentPets)
     }
 }

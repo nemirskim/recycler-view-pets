@@ -63,14 +63,24 @@ class PetsActivity :
     }
 
     // PetsViewModelListener
-    override fun getPets(pets: List<Pet>) {
+    override fun getPets(pets: List<Pet>) = with(binding) {
         if (pets.isNotEmpty()) {
-            binding.noPetsTV.visibility = View.GONE
-            binding.rV.visibility = View.VISIBLE
+            noPetsTV.visibility = View.GONE
+            rV.visibility = View.VISIBLE
             adapter.pets = pets
         } else {
-            binding.rV.visibility = View.GONE
-            binding.noPetsTV.visibility = View.VISIBLE
+            rV.visibility = View.GONE
+            if (vm.isFullListOfExistingPets &&
+                !favoritePetsButton.isPressed &&
+                sortByPetTypeSpinner.selectedItemPosition == 0
+            ) {
+                sortOptions.visibility = View.GONE
+                noPetsTV.visibility = View.VISIBLE
+                noPetsTV.setText(R.string.no_existing_pets)
+                return
+            }
+            noPetsTV.setText(R.string.no_pets)
+            noPetsTV.visibility = View.VISIBLE
         }
     }
 
@@ -101,5 +111,5 @@ class PetsActivity :
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
         vm.changeSortType(position)
 
-    override fun onNothingSelected(parent: AdapterView<*>?){}
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 }

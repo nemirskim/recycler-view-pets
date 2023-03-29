@@ -43,6 +43,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
+        android:id="@+id/sortOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="favoritePetsButton,sortByNameButton, sortByPetTypeSpinner" />
@@ -60,7 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/zilla_slab_semibold"
-        android:text="@string/no_pets"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:visibility="gone"

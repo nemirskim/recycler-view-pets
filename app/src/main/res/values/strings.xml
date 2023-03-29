@@ -12,6 +12,7 @@
     <string name="ok">OK</string>
     <string name="no">No</string>
     <string name="no_pets">There are no pets</string>
+    <string name="no_existing_pets">You have no pets at all</string>
     <string name="only">only</string>
     <string name="sort_by_name">Sort by name</string>
 </resources>
