@@ -1,11 +1,11 @@
 package com.example.recyclerviewpets.views.pets
 
-import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +13,7 @@ import com.example.recyclerviewpets.PetActionsListener
 import com.example.recyclerviewpets.PetAdapter
 import com.example.recyclerviewpets.R
 import com.example.recyclerviewpets.databinding.PetsActivityBinding
+import com.example.recyclerviewpets.models.ListState
 import com.example.recyclerviewpets.models.Pet
 
 class PetsActivity :
@@ -63,24 +64,29 @@ class PetsActivity :
     }
 
     // PetsViewModelListener
-    override fun getPets(pets: List<Pet>) = with(binding) {
-        if (pets.isNotEmpty()) {
-            noPetsTV.visibility = View.GONE
-            rV.visibility = View.VISIBLE
-            adapter.pets = pets
-        } else {
-            rV.visibility = View.GONE
-            if (vm.isFullListOfExistingPets &&
-                !favoritePetsButton.isPressed &&
-                sortByPetTypeSpinner.selectedItemPosition == 0
-            ) {
+    override fun getPets(pets: List<Pet>) {
+        adapter.pets = pets
+    }
+
+    override fun getState(state: ListState) = with(binding) {
+        when(state) {
+            ListState.EMPTY -> {
+                rV.visibility = View.GONE
                 sortOptions.visibility = View.GONE
-                noPetsTV.visibility = View.VISIBLE
                 noPetsTV.setText(R.string.no_existing_pets)
-                return
+                noPetsTV.visibility = View.VISIBLE
             }
-            noPetsTV.setText(R.string.no_pets)
-            noPetsTV.visibility = View.VISIBLE
+            ListState.SORT -> {
+                rV.visibility = View.VISIBLE
+                sortOptions.visibility = View.VISIBLE
+                noPetsTV.setText(R.string.no_pets)
+                noPetsTV.visibility = View.VISIBLE
+            }
+            ListState.FULL -> {
+                rV.visibility = View.VISIBLE
+                sortOptions.visibility = View.VISIBLE
+                noPetsTV.visibility = View.GONE
+            }
         }
     }
 

@@ -1,19 +1,19 @@
 package com.example.recyclerviewpets.views.pets
 
+import com.example.recyclerviewpets.models.ListState
 import com.example.recyclerviewpets.models.Pet
 import com.example.recyclerviewpets.models.PetType
 import com.example.recyclerviewpets.services.PetService
 import com.example.recyclerviewpets.services.PetServiceListener
-import kotlin.properties.Delegates
 
 interface PetsViewModelListener {
     fun getPets(pets: List<Pet>)
+    fun getState(state: ListState)
 }
 
 class PetsViewModel(
     private val listener: PetsViewModelListener
 ) : PetServiceListener {
-    internal var isFullListOfExistingPets by Delegates.notNull<Boolean>()
     private val petService = PetService()
     private var isFavorite = false
     private var isSortedByName = false
@@ -60,24 +60,35 @@ class PetsViewModel(
 
     //  PetServiceListener
     override fun invoke(pets: List<Pet>) {
+        val currentState: ListState
         var currentPets = pets
-        if (isFavorite) {
-            currentPets = currentPets.filter { it.isFavorite }
-        }
-        if (isSortedByName) {
-            currentPets = currentPets.sortedBy { it.name }
-        }
+        if (pets.isEmpty()) {
+            currentState = ListState.EMPTY
+            petType = null
+        } else {
+            if (isFavorite) {
+                currentPets = currentPets.filter { it.isFavorite }
+            }
+            if (isSortedByName) {
+                currentPets = currentPets.sortedBy { it.name }
+            }
 
-        currentPets = when (petType) {
-            PetType.CAT -> currentPets.filter { it.type == PetType.CAT }
-            PetType.DOG -> currentPets.filter { it.type == PetType.DOG }
-            PetType.BIRD -> currentPets.filter { it.type == PetType.BIRD }
-            PetType.PIG -> currentPets.filter { it.type == PetType.PIG }
-            null -> currentPets
-        }
+            currentPets = when (petType) {
+                PetType.CAT -> currentPets.filter { it.type == PetType.CAT }
+                PetType.DOG -> currentPets.filter { it.type == PetType.DOG }
+                PetType.BIRD -> currentPets.filter { it.type == PetType.BIRD }
+                PetType.PIG -> currentPets.filter { it.type == PetType.PIG }
+                null -> currentPets
+            }
 
-        isFullListOfExistingPets = currentPets.size == pets.size
+            currentState = if (currentPets.isEmpty() && (isFavorite || petType != null)) {
+                ListState.SORT
+            } else {
+                ListState.FULL
+            }
+        }
 
         listener.getPets(currentPets)
+        listener.getState(currentState)
     }
 }
