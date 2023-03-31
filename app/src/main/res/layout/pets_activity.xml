@@ -6,47 +6,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/petsAmountTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
+        app:drawableStartCompat="@drawable/pets"
+        app:layout_constraintBottom_toBottomOf="@+id/favoritePetsButton"
+        app:layout_constraintEnd_toStartOf="@id/favoritePetsButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <Button
         android:id="@+id/favoritePetsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
+        android:layout_marginStart="7dp"
         android:backgroundTint="@color/teal_700"
         android:drawableEnd="@drawable/ic_star_fill"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="8dp"
         android:text="@string/only"
         android:textColor="@color/white"
         android:textStyle="italic"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sortByNameButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/petsAmountTV"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/sortByNameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="7dp"
         android:backgroundTint="@color/teal_700"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="8dp"
         android:text="@string/sort_by_name"
         android:textColor="@color/white"
         android:textStyle="italic"
-        app:layout_constraintStart_toEndOf="@id/favoritePetsButton"
+        app:layout_constraintEnd_toStartOf="@+id/sortByPetTypeSpinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/favoritePetsButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/sortByPetTypeSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="7dp"
+        android:paddingHorizontal="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/sortByNameButton"
-        app:layout_constraintStart_toEndOf="@id/sortByNameButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sortByNameButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/sortOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="favoritePetsButton,sortByNameButton, sortByPetTypeSpinner" />
+        app:constraint_referenced_ids="petsAmountTV, favoritePetsButton,sortByNameButton, sortByPetTypeSpinner" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rV"

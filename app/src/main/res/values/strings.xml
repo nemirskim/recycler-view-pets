@@ -15,4 +15,5 @@
     <string name="no_existing_pets">You have no pets at all</string>
     <string name="only">only</string>
     <string name="sort_by_name">Sort by name</string>
+    <string name="pets_amount">Pets amount</string>
 </resources>
