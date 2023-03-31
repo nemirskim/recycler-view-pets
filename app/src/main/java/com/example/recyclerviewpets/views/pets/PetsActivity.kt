@@ -90,6 +90,10 @@ class PetsActivity :
         }
     }
 
+    override fun countPets(amount: Int) {
+        binding.petsAmountTV.text = amount.toString()
+    }
+
     // PetActionsListener
     override fun onPetFavoriteStatus(pet: Pet) {
         vm.changeFavoriteStatus(pet)

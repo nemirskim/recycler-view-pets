@@ -9,6 +9,7 @@ import com.example.recyclerviewpets.services.PetServiceListener
 interface PetsViewModelListener {
     fun getPets(pets: List<Pet>)
     fun getState(state: ListState)
+    fun countPets(amount: Int)
 }
 
 class PetsViewModel(
@@ -62,6 +63,7 @@ class PetsViewModel(
     override fun invoke(pets: List<Pet>) {
         val currentState: ListState
         var currentPets = pets
+        val amount = pets.size
         if (pets.isEmpty()) {
             currentState = ListState.EMPTY
             petType = null
@@ -90,5 +92,6 @@ class PetsViewModel(
 
         listener.getPets(currentPets)
         listener.getState(currentState)
+        listener.countPets(amount)
     }
 }
